@@ -1,0 +1,132 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 95%;
+            height: 1000px;
+            background-color: #222222;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+        #config {
+            float: left;
+            width: 400px;
+            height: 600px;
+        }
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<div id = "config"></div>
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "\u3068\u3046\u3068\u3046", "label": "\u3068\u3046\u3068\u3046", "shape": "dot", "title": "\u3068\u3046\u3068\u3046 Neighbors:\u003cbr\u003e\u9688\u306a\u304f\u003cbr\u003e\u307e\u3060\u003cbr\u003e\u307f\u3093\u306a", "value": 3}, {"font": {"color": "white"}, "group": 0, "id": "\u307f\u3093\u306a", "label": "\u307f\u3093\u306a", "shape": "dot", "title": "\u307f\u3093\u306a Neighbors:\u003cbr\u003e\u3068\u3046\u3068\u3046", "value": 1}, {"font": {"color": "white"}, "group": 1, "id": "\u305f\u3060", "label": "\u305f\u3060", "shape": "dot", "title": "\u305f\u3060 Neighbors:\u003cbr\u003e\u3082\u3046\u003cbr\u003e\u30a4\u30e9\u30a4\u30e9", "value": 2}, {"font": {"color": "white"}, "group": 1, "id": "\u3082\u3046", "label": "\u3082\u3046", "shape": "dot", "title": "\u3082\u3046 Neighbors:\u003cbr\u003e\u305f\u3060\u003cbr\u003e\u30a4\u30e9\u30a4\u30e9", "value": 2}, {"font": {"color": "white"}, "group": 2, "id": "\u30a4\u30e9\u30a4\u30e9", "label": "\u30a4\u30e9\u30a4\u30e9", "shape": "dot", "title": "\u30a4\u30e9\u30a4\u30e9 Neighbors:\u003cbr\u003e\u305f\u3060\u003cbr\u003e\u3082\u3046", "value": 2}, {"font": {"color": "white"}, "group": 4, "id": "\u307e\u3060", "label": "\u307e\u3060", "shape": "dot", "title": "\u307e\u3060 Neighbors:\u003cbr\u003e\u3068\u3046\u3068\u3046", "value": 1}, {"font": {"color": "white"}, "group": 5, "id": "\u9688\u306a\u304f", "label": "\u9688\u306a\u304f", "shape": "dot", "title": "\u9688\u306a\u304f Neighbors:\u003cbr\u003e\u3068\u3046\u3068\u3046", "value": 1}]);
+        edges = new vis.DataSet([{"from": "\u3068\u3046\u3068\u3046", "to": "\u307f\u3093\u306a", "value": 1}, {"from": "\u305f\u3060", "to": "\u3082\u3046", "value": 1}, {"from": "\u305f\u3060", "to": "\u30a4\u30e9\u30a4\u30e9", "value": 1}, {"from": "\u3082\u3046", "to": "\u30a4\u30e9\u30a4\u30e9", "value": 1}, {"from": "\u3068\u3046\u3068\u3046", "to": "\u307e\u3060", "value": 1}, {"from": "\u3068\u3046\u3068\u3046", "to": "\u9688\u306a\u304f", "value": 1}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "forceAtlas2Based": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.01,
+            "damping": 0.4,
+            "gravitationalConstant": -50,
+            "springConstant": 0.08,
+            "springLength": 100
+        },
+        "solver": "forceAtlas2Based",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+        // if this network requires displaying the configure window,
+        // put it in its div
+        options.configure["container"] = document.getElementById("config");
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
