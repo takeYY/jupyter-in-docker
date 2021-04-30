@@ -1,0 +1,117 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 100%;
+            background-color: #222222;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "\u3057\u304d\u308a\u3060", "label": "\u3057\u304d\u308a\u3060", "shape": "dot", "title": "\u3057\u304d\u308a\u3060 Neighbors:\u003cbr\u003e\u3088\u3044\u003cbr\u003e\u3044\u3044", "value": 2}, {"font": {"color": "white"}, "group": 0, "id": "\u3088\u3044", "label": "\u3088\u3044", "shape": "dot", "title": "\u3088\u3044 Neighbors:\u003cbr\u003e\u3057\u304d\u308a\u3060\u003cbr\u003e\u3044\u3044", "value": 2}, {"font": {"color": "white"}, "group": 1, "id": "\u3044\u3044", "label": "\u3044\u3044", "shape": "dot", "title": "\u3044\u3044 Neighbors:\u003cbr\u003e\u3057\u304d\u308a\u3060\u003cbr\u003e\u3088\u3044", "value": 2}, {"font": {"color": "white"}, "group": 3, "id": "\u69d8\u3005\u3060", "label": "\u69d8\u3005\u3060", "shape": "dot", "title": "\u69d8\u3005\u3060 Neighbors:\u003cbr\u003e\u9577\u3044\u003cbr\u003e\u5c0f\u3055\u3044\u003cbr\u003e\u7121\u6570\u3060\u003cbr\u003e\u306a\u3044", "value": 4}, {"font": {"color": "white"}, "group": 3, "id": "\u7121\u6570\u3060", "label": "\u7121\u6570\u3060", "shape": "dot", "title": "\u7121\u6570\u3060 Neighbors:\u003cbr\u003e\u69d8\u3005\u3060\u003cbr\u003e\u9577\u3044\u003cbr\u003e\u5c0f\u3055\u3044\u003cbr\u003e\u306a\u3044", "value": 4}, {"font": {"color": "white"}, "group": 4, "id": "\u9577\u3044", "label": "\u9577\u3044", "shape": "dot", "title": "\u9577\u3044 Neighbors:\u003cbr\u003e\u69d8\u3005\u3060\u003cbr\u003e\u5c0f\u3055\u3044\u003cbr\u003e\u7121\u6570\u3060\u003cbr\u003e\u306a\u3044", "value": 4}, {"font": {"color": "white"}, "group": 5, "id": "\u5c0f\u3055\u3044", "label": "\u5c0f\u3055\u3044", "shape": "dot", "title": "\u5c0f\u3055\u3044 Neighbors:\u003cbr\u003e\u69d8\u3005\u3060\u003cbr\u003e\u9577\u3044\u003cbr\u003e\u7121\u6570\u3060\u003cbr\u003e\u306a\u3044", "value": 4}, {"font": {"color": "white"}, "group": 6, "id": "\u306a\u3044", "label": "\u306a\u3044", "shape": "dot", "title": "\u306a\u3044 Neighbors:\u003cbr\u003e\u69d8\u3005\u3060\u003cbr\u003e\u7121\u667a\u3060\u003cbr\u003e\u8272\u3005\u3060\u003cbr\u003e\u7121\u6570\u3060\u003cbr\u003e\u5fc5\u8981\u3060\u003cbr\u003e\u9577\u3044\u003cbr\u003e\u5acc\u3044\u3060\u003cbr\u003e\u597d\u304d\u3060\u003cbr\u003e\u75c5\u7684\u3060\u003cbr\u003e\u77ed\u3044\u003cbr\u003e\u5371\u967a\u3060\u003cbr\u003e\u99ac\u9e7f\u99ac\u9e7f\u3057\u3044\u003cbr\u003e\u9a12\u304c\u3057\u3044\u003cbr\u003e\u5c0f\u3055\u3044", "value": 14}, {"font": {"color": "white"}, "group": 13, "id": "\u7121\u611b\u60f3\u3060", "label": "\u7121\u611b\u60f3\u3060", "shape": "dot", "title": "\u7121\u611b\u60f3\u3060 Neighbors:\u003cbr\u003e\u81ea\u7136\u3060", "value": 1}, {"font": {"color": "white"}, "group": 13, "id": "\u81ea\u7136\u3060", "label": "\u81ea\u7136\u3060", "shape": "dot", "title": "\u81ea\u7136\u3060 Neighbors:\u003cbr\u003e\u7121\u611b\u60f3\u3060", "value": 1}, {"font": {"color": "white"}, "group": 14, "id": "\u5acc\u3044\u3060", "label": "\u5acc\u3044\u3060", "shape": "dot", "title": "\u5acc\u3044\u3060 Neighbors:\u003cbr\u003e\u306a\u3044", "value": 1}, {"font": {"color": "white"}, "group": 15, "id": "\u8272\u3005\u3060", "label": "\u8272\u3005\u3060", "shape": "dot", "title": "\u8272\u3005\u3060 Neighbors:\u003cbr\u003e\u306a\u3044", "value": 1}, {"font": {"color": "white"}, "group": 16, "id": "\u79d8\u5bc6\u3060", "label": "\u79d8\u5bc6\u3060", "shape": "dot", "title": "\u79d8\u5bc6\u3060 Neighbors:\u003cbr\u003e\u9762\u767d\u3044", "value": 1}, {"font": {"color": "white"}, "group": 16, "id": "\u9762\u767d\u3044", "label": "\u9762\u767d\u3044", "shape": "dot", "title": "\u9762\u767d\u3044 Neighbors:\u003cbr\u003e\u79d8\u5bc6\u3060", "value": 1}, {"font": {"color": "white"}, "group": 17, "id": "\u4e0d\u5fc5\u8981\u3060", "label": "\u4e0d\u5fc5\u8981\u3060", "shape": "dot", "title": "\u4e0d\u5fc5\u8981\u3060 Neighbors:\u003cbr\u003e\u5fc5\u8981\u3060\u003cbr\u003e\u591a\u3044", "value": 2}, {"font": {"color": "white"}, "group": 17, "id": "\u5fc5\u8981\u3060", "label": "\u5fc5\u8981\u3060", "shape": "dot", "title": "\u5fc5\u8981\u3060 Neighbors:\u003cbr\u003e\u4e0d\u5fc5\u8981\u3060\u003cbr\u003e\u99ac\u9e7f\u99ac\u9e7f\u3057\u3044\u003cbr\u003e\u591a\u3044\u003cbr\u003e\u9a12\u304c\u3057\u3044\u003cbr\u003e\u306a\u3044", "value": 5}, {"font": {"color": "white"}, "group": 18, "id": "\u591a\u3044", "label": "\u591a\u3044", "shape": "dot", "title": "\u591a\u3044 Neighbors:\u003cbr\u003e\u5fc5\u8981\u3060\u003cbr\u003e\u4e0d\u5fc5\u8981\u3060", "value": 2}, {"font": {"color": "white"}, "group": 20, "id": "\u597d\u304d\u3060", "label": "\u597d\u304d\u3060", "shape": "dot", "title": "\u597d\u304d\u3060 Neighbors:\u003cbr\u003e\u306a\u3044", "value": 1}, {"font": {"color": "white"}, "group": 21, "id": "\u75c5\u7684\u3060", "label": "\u75c5\u7684\u3060", "shape": "dot", "title": "\u75c5\u7684\u3060 Neighbors:\u003cbr\u003e\u306a\u3044", "value": 1}, {"font": {"color": "white"}, "group": 22, "id": "\u75d2\u3044", "label": "\u75d2\u3044", "shape": "dot", "title": "\u75d2\u3044 Neighbors:\u003cbr\u003e\u75db\u3044", "value": 1}, {"font": {"color": "white"}, "group": 22, "id": "\u75db\u3044", "label": "\u75db\u3044", "shape": "dot", "title": "\u75db\u3044 Neighbors:\u003cbr\u003e\u75d2\u3044", "value": 1}, {"font": {"color": "white"}, "group": 23, "id": "\u4e0d\u5e78\u3060", "label": "\u4e0d\u5e78\u3060", "shape": "dot", "title": "\u4e0d\u5e78\u3060 Neighbors:\u003cbr\u003e\u5e83\u3044\u003cbr\u003e\u6ca2\u5c71\u3060", "value": 2}, {"font": {"color": "white"}, "group": 23, "id": "\u5e83\u3044", "label": "\u5e83\u3044", "shape": "dot", "title": "\u5e83\u3044 Neighbors:\u003cbr\u003e\u4e0d\u5e78\u3060\u003cbr\u003e\u6ca2\u5c71\u3060", "value": 2}, {"font": {"color": "white"}, "group": 24, "id": "\u6ca2\u5c71\u3060", "label": "\u6ca2\u5c71\u3060", "shape": "dot", "title": "\u6ca2\u5c71\u3060 Neighbors:\u003cbr\u003e\u4e0d\u5e78\u3060\u003cbr\u003e\u5e83\u3044", "value": 2}, {"font": {"color": "white"}, "group": 26, "id": "\u77ed\u3044", "label": "\u77ed\u3044", "shape": "dot", "title": "\u77ed\u3044 Neighbors:\u003cbr\u003e\u306a\u3044", "value": 1}, {"font": {"color": "white"}, "group": 27, "id": "\u5999\u3060", "label": "\u5999\u3060", "shape": "dot", "title": "\u5999\u3060 Neighbors:\u003cbr\u003e\u9752\u3044\u003cbr\u003e\u5bd2\u3044", "value": 2}, {"font": {"color": "white"}, "group": 27, "id": "\u5bd2\u3044", "label": "\u5bd2\u3044", "shape": "dot", "title": "\u5bd2\u3044 Neighbors:\u003cbr\u003e\u5999\u3060\u003cbr\u003e\u9752\u3044", "value": 2}, {"font": {"color": "white"}, "group": 28, "id": "\u9752\u3044", "label": "\u9752\u3044", "shape": "dot", "title": "\u9752\u3044 Neighbors:\u003cbr\u003e\u5999\u3060\u003cbr\u003e\u5bd2\u3044", "value": 2}, {"font": {"color": "white"}, "group": 30, "id": "\u7570\u5f62\u3060", "label": "\u7570\u5f62\u3060", "shape": "dot", "title": "\u7570\u5f62\u3060 Neighbors:\u003cbr\u003e\u975e\u5e38\u3060", "value": 1}, {"font": {"color": "white"}, "group": 30, "id": "\u975e\u5e38\u3060", "label": "\u975e\u5e38\u3060", "shape": "dot", "title": "\u975e\u5e38\u3060 Neighbors:\u003cbr\u003e\u7570\u5f62\u3060", "value": 1}, {"font": {"color": "white"}, "group": 31, "id": "\u7121\u667a\u3060", "label": "\u7121\u667a\u3060", "shape": "dot", "title": "\u7121\u667a\u3060 Neighbors:\u003cbr\u003e\u306a\u3044", "value": 1}, {"font": {"color": "white"}, "group": 32, "id": "\u5371\u967a\u3060", "label": "\u5371\u967a\u3060", "shape": "dot", "title": "\u5371\u967a\u3060 Neighbors:\u003cbr\u003e\u306a\u3044", "value": 1}, {"font": {"color": "white"}, "group": 33, "id": "\u4e0d\u7528\u3060", "label": "\u4e0d\u7528\u3060", "shape": "dot", "title": "\u4e0d\u7528\u3060 Neighbors:\u003cbr\u003e\u6697\u3044", "value": 1}, {"font": {"color": "white"}, "group": 33, "id": "\u6697\u3044", "label": "\u6697\u3044", "shape": "dot", "title": "\u6697\u3044 Neighbors:\u003cbr\u003e\u4e0d\u7528\u3060", "value": 1}, {"font": {"color": "white"}, "group": 34, "id": "\u6016\u3044", "label": "\u6016\u3044", "shape": "dot", "title": "\u6016\u3044 Neighbors:\u003cbr\u003e\u4f59\u308a\u3060\u003cbr\u003e\u7121\u6027\u3060", "value": 2}, {"font": {"color": "white"}, "group": 34, "id": "\u7121\u6027\u3060", "label": "\u7121\u6027\u3060", "shape": "dot", "title": "\u7121\u6027\u3060 Neighbors:\u003cbr\u003e\u6016\u3044", "value": 1}, {"font": {"color": "white"}, "group": 35, "id": "\u99ac\u9e7f\u99ac\u9e7f\u3057\u3044", "label": "\u99ac\u9e7f\u99ac\u9e7f\u3057\u3044", "shape": "dot", "title": "\u99ac\u9e7f\u99ac\u9e7f\u3057\u3044 Neighbors:\u003cbr\u003e\u9a12\u304c\u3057\u3044\u003cbr\u003e\u5fc5\u8981\u3060\u003cbr\u003e\u306a\u3044", "value": 3}, {"font": {"color": "white"}, "group": 36, "id": "\u9a12\u304c\u3057\u3044", "label": "\u9a12\u304c\u3057\u3044", "shape": "dot", "title": "\u9a12\u304c\u3057\u3044 Neighbors:\u003cbr\u003e\u5fc5\u8981\u3060\u003cbr\u003e\u99ac\u9e7f\u99ac\u9e7f\u3057\u3044\u003cbr\u003e\u306a\u3044", "value": 3}, {"font": {"color": "white"}, "group": 41, "id": "\u4f4e\u3044", "label": "\u4f4e\u3044", "shape": "dot", "title": "\u4f4e\u3044 Neighbors:\u003cbr\u003e\u592a\u3044\u003cbr\u003e\u6dcb\u3057\u3044\u003cbr\u003e\u5909\u3060\u003cbr\u003e\u4e38\u3044", "value": 4}, {"font": {"color": "white"}, "group": 41, "id": "\u592a\u3044", "label": "\u592a\u3044", "shape": "dot", "title": "\u592a\u3044 Neighbors:\u003cbr\u003e\u4e38\u3044\u003cbr\u003e\u4f4e\u3044\u003cbr\u003e\u5909\u3060\u003cbr\u003e\u6dcb\u3057\u3044", "value": 4}, {"font": {"color": "white"}, "group": 42, "id": "\u4e38\u3044", "label": "\u4e38\u3044", "shape": "dot", "title": "\u4e38\u3044 Neighbors:\u003cbr\u003e\u592a\u3044\u003cbr\u003e\u4f4e\u3044\u003cbr\u003e\u5909\u3060\u003cbr\u003e\u6dcb\u3057\u3044", "value": 4}, {"font": {"color": "white"}, "group": 43, "id": "\u5909\u3060", "label": "\u5909\u3060", "shape": "dot", "title": "\u5909\u3060 Neighbors:\u003cbr\u003e\u592a\u3044\u003cbr\u003e\u4f4e\u3044\u003cbr\u003e\u6dcb\u3057\u3044\u003cbr\u003e\u4e38\u3044", "value": 4}, {"font": {"color": "white"}, "group": 44, "id": "\u6dcb\u3057\u3044", "label": "\u6dcb\u3057\u3044", "shape": "dot", "title": "\u6dcb\u3057\u3044 Neighbors:\u003cbr\u003e\u592a\u3044\u003cbr\u003e\u4f4e\u3044\u003cbr\u003e\u5909\u3060\u003cbr\u003e\u4e38\u3044", "value": 4}, {"font": {"color": "white"}, "group": 51, "id": "\u60aa\u3044", "label": "\u60aa\u3044", "shape": "dot", "title": "\u60aa\u3044 Neighbors:\u003cbr\u003e\u919c\u3044", "value": 1}, {"font": {"color": "white"}, "group": 51, "id": "\u919c\u3044", "label": "\u919c\u3044", "shape": "dot", "title": "\u919c\u3044 Neighbors:\u003cbr\u003e\u60aa\u3044", "value": 1}, {"font": {"color": "white"}, "group": 52, "id": "\u53b3\u7c9b\u3060", "label": "\u53b3\u7c9b\u3060", "shape": "dot", "title": "\u53b3\u7c9b\u3060 Neighbors:\u003cbr\u003e\u6ed1\u7a3d\u3060", "value": 1}, {"font": {"color": "white"}, "group": 52, "id": "\u6ed1\u7a3d\u3060", "label": "\u6ed1\u7a3d\u3060", "shape": "dot", "title": "\u6ed1\u7a3d\u3060 Neighbors:\u003cbr\u003e\u53b3\u7c9b\u3060", "value": 1}, {"font": {"color": "white"}, "group": 53, "id": "\u4f59\u308a\u3060", "label": "\u4f59\u308a\u3060", "shape": "dot", "title": "\u4f59\u308a\u3060 Neighbors:\u003cbr\u003e\u6016\u3044", "value": 1}, {"font": {"color": "white"}, "group": 54, "id": "\u3069\u3093\u306a\u3060", "label": "\u3069\u3093\u306a\u3060", "shape": "dot", "title": "\u3069\u3093\u306a\u3060 Neighbors:\u003cbr\u003e\u8efd\u3044", "value": 1}, {"font": {"color": "white"}, "group": 54, "id": "\u8efd\u3044", "label": "\u8efd\u3044", "shape": "dot", "title": "\u8efd\u3044 Neighbors:\u003cbr\u003e\u3069\u3093\u306a\u3060", "value": 1}]);
+        edges = new vis.DataSet([{"from": "\u3057\u304d\u308a\u3060", "to": "\u3088\u3044", "value": 1}, {"from": "\u3044\u3044", "to": "\u3057\u304d\u308a\u3060", "value": 1}, {"from": "\u3044\u3044", "to": "\u3088\u3044", "value": 1}, {"from": "\u69d8\u3005\u3060", "to": "\u7121\u6570\u3060", "value": 1}, {"from": "\u69d8\u3005\u3060", "to": "\u9577\u3044", "value": 1}, {"from": "\u5c0f\u3055\u3044", "to": "\u69d8\u3005\u3060", "value": 1}, {"from": "\u306a\u3044", "to": "\u69d8\u3005\u3060", "value": 1}, {"from": "\u7121\u6570\u3060", "to": "\u9577\u3044", "value": 1}, {"from": "\u5c0f\u3055\u3044", "to": "\u7121\u6570\u3060", "value": 1}, {"from": "\u306a\u3044", "to": "\u7121\u6570\u3060", "value": 1}, {"from": "\u5c0f\u3055\u3044", "to": "\u9577\u3044", "value": 1}, {"from": "\u306a\u3044", "to": "\u9577\u3044", "value": 1}, {"from": "\u306a\u3044", "to": "\u5c0f\u3055\u3044", "value": 1}, {"from": "\u7121\u611b\u60f3\u3060", "to": "\u81ea\u7136\u3060", "value": 1}, {"from": "\u306a\u3044", "to": "\u5acc\u3044\u3060", "value": 1}, {"from": "\u306a\u3044", "to": "\u8272\u3005\u3060", "value": 1}, {"from": "\u79d8\u5bc6\u3060", "to": "\u9762\u767d\u3044", "value": 1}, {"from": "\u4e0d\u5fc5\u8981\u3060", "to": "\u5fc5\u8981\u3060", "value": 1}, {"from": "\u591a\u3044", "to": "\u5fc5\u8981\u3060", "value": 1}, {"from": "\u4e0d\u5fc5\u8981\u3060", "to": "\u591a\u3044", "value": 1}, {"from": "\u306a\u3044", "to": "\u597d\u304d\u3060", "value": 1}, {"from": "\u306a\u3044", "to": "\u75c5\u7684\u3060", "value": 1}, {"from": "\u75d2\u3044", "to": "\u75db\u3044", "value": 1}, {"from": "\u4e0d\u5e78\u3060", "to": "\u5e83\u3044", "value": 1}, {"from": "\u4e0d\u5e78\u3060", "to": "\u6ca2\u5c71\u3060", "value": 1}, {"from": "\u5e83\u3044", "to": "\u6ca2\u5c71\u3060", "value": 1}, {"from": "\u306a\u3044", "to": "\u77ed\u3044", "value": 1}, {"from": "\u5999\u3060", "to": "\u5bd2\u3044", "value": 1}, {"from": "\u5bd2\u3044", "to": "\u9752\u3044", "value": 1}, {"from": "\u5999\u3060", "to": "\u9752\u3044", "value": 1}, {"from": "\u7570\u5f62\u3060", "to": "\u975e\u5e38\u3060", "value": 1}, {"from": "\u306a\u3044", "to": "\u7121\u667a\u3060", "value": 1}, {"from": "\u306a\u3044", "to": "\u5371\u967a\u3060", "value": 1}, {"from": "\u4e0d\u7528\u3060", "to": "\u6697\u3044", "value": 1}, {"from": "\u6016\u3044", "to": "\u7121\u6027\u3060", "value": 1}, {"from": "\u5fc5\u8981\u3060", "to": "\u99ac\u9e7f\u99ac\u9e7f\u3057\u3044", "value": 1}, {"from": "\u99ac\u9e7f\u99ac\u9e7f\u3057\u3044", "to": "\u9a12\u304c\u3057\u3044", "value": 1}, {"from": "\u306a\u3044", "to": "\u99ac\u9e7f\u99ac\u9e7f\u3057\u3044", "value": 1}, {"from": "\u5fc5\u8981\u3060", "to": "\u9a12\u304c\u3057\u3044", "value": 1}, {"from": "\u306a\u3044", "to": "\u5fc5\u8981\u3060", "value": 1}, {"from": "\u306a\u3044", "to": "\u9a12\u304c\u3057\u3044", "value": 1}, {"from": "\u4f4e\u3044", "to": "\u592a\u3044", "value": 1}, {"from": "\u4e38\u3044", "to": "\u4f4e\u3044", "value": 1}, {"from": "\u4f4e\u3044", "to": "\u5909\u3060", "value": 1}, {"from": "\u4f4e\u3044", "to": "\u6dcb\u3057\u3044", "value": 1}, {"from": "\u4e38\u3044", "to": "\u592a\u3044", "value": 1}, {"from": "\u5909\u3060", "to": "\u592a\u3044", "value": 1}, {"from": "\u592a\u3044", "to": "\u6dcb\u3057\u3044", "value": 1}, {"from": "\u4e38\u3044", "to": "\u5909\u3060", "value": 1}, {"from": "\u4e38\u3044", "to": "\u6dcb\u3057\u3044", "value": 1}, {"from": "\u5909\u3060", "to": "\u6dcb\u3057\u3044", "value": 1}, {"from": "\u60aa\u3044", "to": "\u919c\u3044", "value": 1}, {"from": "\u53b3\u7c9b\u3060", "to": "\u6ed1\u7a3d\u3060", "value": 1}, {"from": "\u4f59\u308a\u3060", "to": "\u6016\u3044", "value": 1}, {"from": "\u3069\u3093\u306a\u3060", "to": "\u8efd\u3044", "value": 1}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "forceAtlas2Based": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.01,
+            "damping": 0.4,
+            "gravitationalConstant": -50,
+            "springConstant": 0.08,
+            "springLength": 100
+        },
+        "solver": "forceAtlas2Based",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

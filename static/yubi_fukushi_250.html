@@ -1,0 +1,117 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 100%;
+            background-color: #222222;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "\u3058\u304d\u306b", "label": "\u3058\u304d\u306b", "shape": "dot", "title": "\u3058\u304d\u306b Neighbors:\u003cbr\u003e\u5c11\u3057\u003cbr\u003e\u3061\u3087\u3063\u3068\u003cbr\u003e\u3082\u3046", "value": 3}, {"font": {"color": "white"}, "group": 0, "id": "\u5c11\u3057", "label": "\u5c11\u3057", "shape": "dot", "title": "\u5c11\u3057 Neighbors:\u003cbr\u003e\u3058\u304d\u306b\u003cbr\u003e\u3061\u3087\u3063\u3068\u003cbr\u003e\u30cf\u30c3\u3068\u003cbr\u003e\u3082\u3046\u003cbr\u003e\u5484\u55df\u306b", "value": 5}, {"font": {"color": "white"}, "group": 1, "id": "\u3061\u3087\u3063\u3068", "label": "\u3061\u3087\u3063\u3068", "shape": "dot", "title": "\u3061\u3087\u3063\u3068 Neighbors:\u003cbr\u003e\u5c11\u3057\u003cbr\u003e\u3058\u304d\u306b\u003cbr\u003e\u3082\u3046", "value": 3}, {"font": {"color": "white"}, "group": 2, "id": "\u3082\u3046", "label": "\u3082\u3046", "shape": "dot", "title": "\u3082\u3046 Neighbors:\u003cbr\u003e\u5c11\u3057\u003cbr\u003e\u3058\u304d\u306b\u003cbr\u003e\u3061\u3087\u3063\u3068", "value": 3}, {"font": {"color": "white"}, "group": 6, "id": "\u3058\u3063\u3068", "label": "\u3058\u3063\u3068", "shape": "dot", "title": "\u3058\u3063\u3068 Neighbors:\u003cbr\u003e\u3088\u307b\u3069", "value": 1}, {"font": {"color": "white"}, "group": 6, "id": "\u3088\u307b\u3069", "label": "\u3088\u307b\u3069", "shape": "dot", "title": "\u3088\u307b\u3069 Neighbors:\u003cbr\u003e\u3058\u3063\u3068", "value": 1}, {"font": {"color": "white"}, "group": 7, "id": "\u30cf\u30c3\u3068", "label": "\u30cf\u30c3\u3068", "shape": "dot", "title": "\u30cf\u30c3\u3068 Neighbors:\u003cbr\u003e\u5c11\u3057\u003cbr\u003e\u5484\u55df\u306b", "value": 2}, {"font": {"color": "white"}, "group": 8, "id": "\u5484\u55df\u306b", "label": "\u5484\u55df\u306b", "shape": "dot", "title": "\u5484\u55df\u306b Neighbors:\u003cbr\u003e\u5c11\u3057\u003cbr\u003e\u30cf\u30c3\u3068", "value": 2}, {"font": {"color": "white"}, "group": 10, "id": "\u3057\u304d\u308a\u3068", "label": "\u3057\u304d\u308a\u3068", "shape": "dot", "title": "\u3057\u304d\u308a\u3068 Neighbors:\u003cbr\u003e\u305a\u3063\u3068\u003cbr\u003e\u5b9f\u969b", "value": 2}, {"font": {"color": "white"}, "group": 10, "id": "\u305a\u3063\u3068", "label": "\u305a\u3063\u3068", "shape": "dot", "title": "\u305a\u3063\u3068 Neighbors:\u003cbr\u003e\u3057\u304d\u308a\u3068\u003cbr\u003e\u5b9f\u969b", "value": 2}, {"font": {"color": "white"}, "group": 11, "id": "\u5b9f\u969b", "label": "\u5b9f\u969b", "shape": "dot", "title": "\u5b9f\u969b Neighbors:\u003cbr\u003e\u305a\u3063\u3068\u003cbr\u003e\u3057\u304d\u308a\u3068", "value": 2}]);
+        edges = new vis.DataSet([{"from": "\u3058\u304d\u306b", "to": "\u5c11\u3057", "value": 1}, {"from": "\u3061\u3087\u3063\u3068", "to": "\u5c11\u3057", "value": 1}, {"from": "\u3082\u3046", "to": "\u5c11\u3057", "value": 1}, {"from": "\u3058\u304d\u306b", "to": "\u3061\u3087\u3063\u3068", "value": 1}, {"from": "\u3058\u304d\u306b", "to": "\u3082\u3046", "value": 1}, {"from": "\u3061\u3087\u3063\u3068", "to": "\u3082\u3046", "value": 1}, {"from": "\u3058\u3063\u3068", "to": "\u3088\u307b\u3069", "value": 1}, {"from": "\u30cf\u30c3\u3068", "to": "\u5c11\u3057", "value": 1}, {"from": "\u5484\u55df\u306b", "to": "\u5c11\u3057", "value": 1}, {"from": "\u30cf\u30c3\u3068", "to": "\u5484\u55df\u306b", "value": 1}, {"from": "\u3057\u304d\u308a\u3068", "to": "\u305a\u3063\u3068", "value": 1}, {"from": "\u3057\u304d\u308a\u3068", "to": "\u5b9f\u969b", "value": 1}, {"from": "\u305a\u3063\u3068", "to": "\u5b9f\u969b", "value": 1}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "forceAtlas2Based": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.01,
+            "damping": 0.4,
+            "gravitationalConstant": -50,
+            "springConstant": 0.08,
+            "springLength": 100
+        },
+        "solver": "forceAtlas2Based",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
